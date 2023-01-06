@@ -1,4 +1,3 @@
-import { GoogleSpreadsheet } from 'google-spreadsheet';
 export const webhook = async (req, res) => {
   try {
     const doc = new GoogleSpreadsheet(
