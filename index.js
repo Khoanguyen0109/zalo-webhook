@@ -4,9 +4,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import { rError } from './utils/respones';
 import dotenv from 'dotenv';
-import webhook from './webhook';
 
 import morgan from 'morgan';
+import webhook from './api/index';
 global.APP = __dirname;
 dotenv.config();
 const app = express();
@@ -24,9 +24,8 @@ app.use(bodyParser.json({ limit: '50mb' }));
 // Setup routes here
 const routes = [webhook];
 
-for (let i = 0; i < routes.length; i++) {
-  app.use(routes[i]);
-}
+app.use('/webhook', webhook);
+
 app.get('/', async (req, res) => {
   res.json({ status: true, message: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL });
 });

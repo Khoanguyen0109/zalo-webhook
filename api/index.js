@@ -3,8 +3,7 @@ import { webhook } from './controller';
 
 const router = Router();
 
+router.post('/', webhook);
+router.get('/', webhook);
 
-router.post('/webhook' , webhook)
-router.get('/webhook' , webhook)
-
-export default router
+export default router;
