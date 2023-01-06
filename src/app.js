@@ -3,11 +3,12 @@ import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { rError } from './utils/respones';
-
-import webhook from './webhook'
+import dotenv from 'dotenv';
+import webhook from './webhook';
 
 import morgan from 'morgan';
 global.APP = __dirname;
+dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,15 +22,13 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // Load the routes ("controllers" -ish)
 // Setup routes here
-const routes = [
-  webhook
-];
+const routes = [webhook];
 
 for (let i = 0; i < routes.length; i++) {
   app.use(routes[i]);
 }
 app.get('/', async (req, res) => {
-  res.json({ status: true, message: 'Our node.js app works' });
+  res.json({ status: true, message: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL });
 });
 
 app.use((err, req, res, next) => {
