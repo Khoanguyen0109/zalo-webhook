@@ -78,7 +78,7 @@ app.post('/', async (req, res) => {
         await sheet.addRows([
           { userId: req.body.user_id_by_app, message: req.body?.message?.text },
         ]);
-        return res.json({ message: 'Success' });
+        return res.status(200).json({ message: 'Success' });
 
       default:
         break;
