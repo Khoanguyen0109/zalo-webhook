@@ -6,7 +6,7 @@ import { rError } from './utils/respones';
 import dotenv from 'dotenv';
 
 import morgan from 'morgan';
-import webhook from './api/index';
+import  webhook  from './api/webhook';
 global.APP = __dirname;
 dotenv.config();
 const app = express();
@@ -22,7 +22,6 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // Load the routes ("controllers" -ish)
 // Setup routes here
-const routes = [webhook];
 
 app.use('/webhook', webhook);
 
