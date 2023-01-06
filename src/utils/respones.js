@@ -16,4 +16,4 @@ function rError(res, code, errors, data) {
   return res.status(code || 500).json(response);
 }
 
-export { rSuccess, rError };
+module.exports = { rSuccess, rError };
