@@ -3,6 +3,9 @@ import cors from 'cors';
 import express from 'express';
 import bodyParser from 'body-parser';
 import { rError } from './utils/respones';
+
+import webhook from './webhook'
+
 import morgan from 'morgan';
 global.APP = __dirname;
 const app = express();
@@ -18,10 +21,12 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // Load the routes ("controllers" -ish)
 // Setup routes here
-const routes = [];
+const routes = [
+  webhook
+];
 
 for (let i = 0; i < routes.length; i++) {
-  app.use('/1.0', routes[i]);
+  app.use(routes[i]);
 }
 app.get('/', async (req, res) => {
   res.json({ status: true, message: 'Our node.js app works' });
