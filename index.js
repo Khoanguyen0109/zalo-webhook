@@ -21,13 +21,12 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // Load the routes ("controllers" -ish)
 // Setup routes here
-
-app.get('/api/webhook', webhook);
-app.post('/api/webhook', webhook);
-
 app.get('/', async (req, res) => {
   res.json({ status: true, message: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL });
 });
+
+app.get('/api/webhook', webhook);
+app.post('/api/webhook', webhook);
 
 app.use((err, req, res, next) => {
   const { message, code, subcode, errorItems, error } = err;
