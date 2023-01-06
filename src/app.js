@@ -5,7 +5,7 @@ import { rError } from './utils/respones';
 import dotenv from 'dotenv';
 
 import morgan from 'morgan';
-// import { webhook } from './api/controller';
+import { webhook } from './api/controller';
 global.APP = __dirname;
 dotenv.config();
 const app = express();
@@ -22,14 +22,10 @@ app.use(bodyParser.json({ limit: '50mb' }));
 // Load the routes ("controllers" -ish)
 // Setup routes here
 
-// app.get('/api/webhook', webhook);
+app.get('/api/webhook', webhook);
 // app.post('/api/webhook', webhook);
 app.get('/', (req, res) => {
   res.send('Express on Vercel');
-});
-
-app.listen(5000, () => {
-  console.log('Running on port 5000.');
 });
 
 app.use((err, req, res, next) => {
