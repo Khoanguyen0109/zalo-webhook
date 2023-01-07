@@ -25,8 +25,8 @@ app.use(bodyParser.json({ limit: '50mb' }));
 // Setup routes here
 
 // app.post('/api/webhook', webhook);
-//htpps://goappscr
-app.post('/', async (req, res) => {
+//htpps://goappscript.com/api/webhook
+app.post('/api/webhook', async (req, res) => {
   try {
     const doc = new GoogleSpreadsheet(
       '1RzTedxhXeK3OJq4RXs41HrgZj0gP1hlRrlsgkgpOfwo'
