@@ -55,6 +55,21 @@ app.post('/api/webhook', async (req, res) => {
         },
       ]);
     }
+    if (req?.body?.event_name === 'user_send_image') {
+      var atts = req.body.attachments
+        .map(function (a) {
+          return a.payload.thumbnail;
+        })
+        .join('\r\n');
+      await sheet.addRows([
+        {
+          event: req.body?.event_name,
+          userId: req.body?.sender?.id,
+          message: req.body?.message?.text,
+          attachment: atts,
+        },
+      ]);
+    }
     return res.status(200).json({ message: 'webhook' });
   } catch (error) {
     console.log('error', error);
