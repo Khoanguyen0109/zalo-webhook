@@ -45,18 +45,17 @@ app.post('/api/webhook', async (req, res) => {
 
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
-
-    if (req?.body?.event_name) {
-      switch (req.body.event_name) {
-        case 'user_send_text':
-          await sheet.addRows([
-            { userId: req.body?.sender?.id, message: req.body?.message?.text },
-          ]);
-          return res.status(200);
-        default:
-          return res.status(200);
-      }
-    }
+    await sheet.addRows([
+      { userId: req?.body?.sender?.id, message: req.body?.message?.text },
+    ]);
+    // if (req?.body?.event_name) {
+    //   switch (req.body.event_name) {
+    //     case 'user_send_text':
+    //       return res.status(200);
+    //     default:
+    //       return res.status(200);
+    //   }
+    // }
 
     return res.status(200).json({ message: 'webhook' });
   } catch (error) {
