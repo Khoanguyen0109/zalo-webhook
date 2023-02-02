@@ -45,9 +45,7 @@ app.post('/api/webhook', async (req, res) => {
 
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
-    await sheet.addRows([
-      { userId: req?.body?.sender?.id, message: req.body?.message?.text },
-    ]);
+
     await sheet.addRows([
       {
         event: req.body?.event_name,
