@@ -45,29 +45,30 @@ app.post('/api/webhook', async (req, res) => {
 
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
-
     if (req?.body?.event_name === 'user_send_text') {
       await sheet.addRows([
         {
           event: req.body?.event_name,
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
+          timestamp: new Date(req.body?.timestamp),
         },
       ]);
     }
     if (req?.body?.event_name === 'user_send_image') {
-      var atts = req.body.message.attachments.map(function (a) {
-        console.log(a)
+      var atts = req.body.message.attachments
+        .map(function (a) {
+          console.log(a);
           return a.payload.thumbnail;
         })
         .join('\r\n');
-      console.log('atts', atts);
       await sheet.addRows([
         {
           event: req.body?.event_name,
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
           attachment: atts,
+          timestamp: new Date(req.body?.timestamp),
         },
       ]);
     }
