@@ -45,7 +45,7 @@ app.post('/api/webhook', async (req, res) => {
 
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
-    console.log('req.body?.timestamp) :>> ', req.body?.timestamp));
+    console.log('req.body?.timestamp) :>> ', req.body?.timestamp);
     if (req?.body?.event_name === 'user_send_text') {
       await sheet.addRows([
         {
