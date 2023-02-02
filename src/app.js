@@ -48,6 +48,13 @@ app.post('/api/webhook', async (req, res) => {
     await sheet.addRows([
       { userId: req?.body?.sender?.id, message: req.body?.message?.text },
     ]);
+    await sheet.addRows([
+      {
+        event: req.body?.event_name,
+        userId: req.body?.sender?.id,
+        message: req.body?.message?.text,
+      },
+    ]);
     // if (req?.body?.event_name) {
     //   switch (req.body.event_name) {
     //     case 'user_send_text':
