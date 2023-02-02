@@ -45,13 +45,14 @@ app.post('/api/webhook', async (req, res) => {
 
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
+    console.log('req.body?.timestamp) :>> ', req.body?.timestamp));
     if (req?.body?.event_name === 'user_send_text') {
       await sheet.addRows([
         {
           event: req.body?.event_name,
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
-          timestamp: new Date(req.body?.timestamp),
+          timestamp: new Date(req.body?.timestamp).toString(),
         },
       ]);
     }
@@ -68,7 +69,7 @@ app.post('/api/webhook', async (req, res) => {
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
           attachment: atts,
-          timestamp: new Date(req.body?.timestamp),
+          timestamp: new Date(req.body?.timestamp).toString(),
         },
       ]);
     }
