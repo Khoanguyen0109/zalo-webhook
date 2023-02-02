@@ -56,8 +56,8 @@ app.post('/api/webhook', async (req, res) => {
       ]);
     }
     if (req?.body?.event_name === 'user_send_image') {
-      var atts = req.body.message.attachments
-        .map(function (a) {
+      var atts = req.body.message.attachments.map(function (a) {
+        console.log(a)
           return a.payload.thumbnail;
         })
         .join('\r\n');
