@@ -53,7 +53,7 @@ app.post('/api/webhook', async (req, res) => {
           event: req.body?.event_name,
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
-          timestamp: format(toDate(new Date(req.body.timestamp)), 'MM/DD/YYYY'),
+          timestamp: toDate(new Date(req.body.timestamp)),
         },
       ]);
     }
@@ -70,7 +70,7 @@ app.post('/api/webhook', async (req, res) => {
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
           attachment: atts,
-          timestamp: format(toDate(new Date(req.body.timestamp)), 'MM/DD/YYYY'),
+          timestamp: toDate(new Date(req.body.timestamp)),
         },
       ]);
     }
