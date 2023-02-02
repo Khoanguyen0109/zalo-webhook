@@ -61,6 +61,7 @@ app.post('/api/webhook', async (req, res) => {
       //     return a.payload.thumbnail;
       //   })
       //   .join('\r\n');
+      console.log('req.body', req.body)
       await sheet.addRows([
         {
           event: req.body?.event_name,
