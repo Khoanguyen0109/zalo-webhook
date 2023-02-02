@@ -50,7 +50,7 @@ app.post('/api/webhook', async (req, res) => {
         await sheet.addRows([
           { userId: req.body.sender.id, message: req.body?.message?.text },
         ]);
-        return res.status(200).json({ message: 'Success' });
+        return res.status(200)
 
       default:
         break;
