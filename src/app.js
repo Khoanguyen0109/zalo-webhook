@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const morgan = require('morgan');
 // const { webhook } = require(" './api/controller';
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const { format } = require('date-fns');
+const { format, toDate } = require('date-fns');
 
 global.APP = __dirname;
 dotenv.config();
@@ -53,7 +53,7 @@ app.post('/api/webhook', async (req, res) => {
           event: req.body?.event_name,
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
-          timestamp: format(new Date(req.body.timestamp), 'MM/DD/YYYY'),
+          timestamp: format(toDate(new Date(req.body.timestamp)), 'MM/DD/YYYY'),
         },
       ]);
     }
@@ -70,7 +70,7 @@ app.post('/api/webhook', async (req, res) => {
           userId: req.body?.sender?.id,
           message: req.body?.message?.text,
           attachment: atts,
-          timestamp: format(new Date(req.body.timestamp), 'MM/DD/YYYY'),
+          timestamp: format(toDate(new Date(req.body.timestamp)), 'MM/DD/YYYY'),
         },
       ]);
     }
