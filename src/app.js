@@ -26,6 +26,9 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // app.post('/api/webhook', webhook);
 //htpps://goappscript.com/api/webhook
+app.get('/api/webhook', async (req, res) => {
+  return res.status(200).json({ message: 'webhook' });
+});
 app.post('/api/webhook', async (req, res) => {
   try {
     const doc = new GoogleSpreadsheet(
