@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { rError } = require('./utils/respones');
 const dotenv = require('dotenv');
+const moment = require('moment-timezone');
 
 const morgan = require('morgan');
 // const { webhook } = require(" './api/controller';
@@ -47,30 +48,37 @@ app.post('/api/webhook', async (req, res) => {
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
     console.log('req.body?.timestamp) :>> ', req.body?.timestamp);
+    const messageObject = {
+      event: req.body?.event_name,
+      userId: req.body?.sender?.id,
+      message: req.body?.message?.text,
+      timestamp: moment
+        .tz(new Date(), 'Asia/Ho_Chi_Minh')
+        .format('DD/MM/YYYY , hh:mm A'),
+    };
     if (req?.body?.event_name === 'user_send_text') {
-      await sheet.addRows([
-        {
-          event: req.body?.event_name,
-          userId: req.body?.sender?.id,
-          message: req.body?.message?.text,
-          timestamp: format(new Date(), 'dd/MM/yyyy , hh:mm a..aa	'),
-        },
-      ]);
+      await sheet.addRows([messageObject]);
     }
     if (req?.body?.event_name === 'user_send_image') {
       var atts = req.body.message.attachments
         .map(function (a) {
-          console.log(a);
           return a.payload.thumbnail;
         })
         .join('\r\n');
       await sheet.addRows([
         {
-          event: req.body?.event_name,
-          userId: req.body?.sender?.id,
-          message: req.body?.message?.text,
+          ...messageObject,
           attachment: atts,
-          timestamp: format(new Date(), 'dd/MM/yyyy , hh:mm aa	'),
+        },
+      ]);
+    }
+    if (req.body.event_name === 'user_send_location') {
+      var location = req.body.message.attachments[0].payload;
+      await sheet.addRows([
+        {
+          ...messageObject,
+          latitude: location.latitude,
+          longitude: location.longitude,
         },
       ]);
     }
