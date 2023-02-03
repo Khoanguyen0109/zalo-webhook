@@ -73,7 +73,7 @@ app.post('/api/webhook', async (req, res) => {
       ]);
     }
     if (req.body.event_name === 'user_send_location') {
-      var location = req.body.message.attachments[0].payload;
+      var location = req.body.message.attachments[0].payload.coordinates;
       await sheet.addRows([
         {
           ...messageObject,
