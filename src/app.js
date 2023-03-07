@@ -28,13 +28,16 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // app.post('/api/webhook', webhook);
 //htpps://goappscript.com/api/webhook
+////////////////////////////////
 app.get('/api/webhook', async (req, res) => {
-  return res.status(200).json({ message: 'webhook' });
+  return res.status(200).json({ array: [] });
+  // return res.status(200).json({ message: 'webhook' });
 });
+
 app.post('/api/webhook', async (req, res) => {
   try {
     const doc = new GoogleSpreadsheet(
-      '1RzTedxhXeK3OJq4RXs41HrgZj0gP1hlRrlsgkgpOfwo'
+      '1AFTm38PnzJpYCd5dO8zS1rtH-lP7RZuyvLwP37k1NsU'
     );
 
     // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
@@ -47,7 +50,6 @@ app.post('/api/webhook', async (req, res) => {
 
     const info = await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
-    console.log('req.body?.timestamp) :>> ', req.body?.timestamp);
     const messageObject = {
       event: req.body?.event_name,
       userId: req.body?.sender?.id,
@@ -56,6 +58,14 @@ app.post('/api/webhook', async (req, res) => {
         .tz(new Date(), 'Asia/Ho_Chi_Minh')
         .format('DD/MM/YYYY , hh:mm A'),
     };
+    switch (req?.body?.event_name) {
+      case 'user_send_text':
+        console.log('user_send_text :>> ');
+        break;
+
+      default:
+        break;
+    }
     if (req?.body?.event_name === 'user_send_text') {
       await sheet.addRows([messageObject]);
     }
@@ -82,11 +92,30 @@ app.post('/api/webhook', async (req, res) => {
         },
       ]);
     }
+    if (req?.body?.event_name === 'user_send_image') {
+      var atts = req.body.message.attachments
+        .map(function (a) {
+          return a.payload.thumbnail;
+        })
+        .join('\r\n');
+      await sheet.addRows([
+        {
+          ...messageObject,
+          attachment: atts,
+        },
+      ]);
+    }
     return res.status(200).json({ message: 'webhook' });
   } catch (error) {
     console.log('error', error);
   }
 });
+
+app.get('/api/get-house', async (req, res) => {
+  return res.status(200).json({ house: [] });
+});
+
+///////////////////////////////////////////
 
 app.use((err, req, res, next) => {
   const { message, code, subcode, errorItems, error } = err;
