@@ -66,10 +66,17 @@ app.post('/api/webhook', async (req, res) => {
       default:
         break;
     }
-    if (req?.body?.event_name === 'user_send_text') {
+    if (
+      req?.body?.event_name === 'user_send_text' ||
+      req?.body?.event_name === 'oa_send_text' ||
+      req?.body?.event_name === 'oa_send_list'
+    ) {
       await sheet.addRows([messageObject]);
     }
-    if (req?.body?.event_name === 'user_send_image') {
+    if (
+      req?.body?.event_name === 'user_send_image' ||
+      req?.body?.event_name === 'oa_send_image'
+    ) {
       var atts = req.body.message.attachments
         .map(function (a) {
           return a.payload.thumbnail;
@@ -92,27 +99,11 @@ app.post('/api/webhook', async (req, res) => {
         },
       ]);
     }
-    if (req?.body?.event_name === 'user_send_image') {
-      var atts = req.body.message.attachments
-        .map(function (a) {
-          return a.payload.thumbnail;
-        })
-        .join('\r\n');
-      await sheet.addRows([
-        {
-          ...messageObject,
-          attachment: atts,
-        },
-      ]);
-    }
+
     return res.status(200).json({ message: 'webhook' });
   } catch (error) {
     console.log('error', error);
   }
-});
-
-app.get('/api/get-house', async (req, res) => {
-  return res.status(200).json({ house: [] });
 });
 
 ///////////////////////////////////////////
