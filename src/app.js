@@ -68,14 +68,14 @@ app.post('/api/webhook', async (req, res) => {
     }
     if (
       req?.body?.event_name === 'user_send_text' ||
-      req?.body?.event_name === 'oa_send_text' ||
-      req?.body?.event_name === 'oa_send_list'
+      req?.body?.event_name === 'oa_send_text'
     ) {
       await sheet.addRows([messageObject]);
     }
     if (
       req?.body?.event_name === 'user_send_image' ||
-      req?.body?.event_name === 'oa_send_image'
+      req?.body?.event_name === 'oa_send_image' ||
+      req?.body?.event_name === 'oa_send_list'
     ) {
       var atts = req.body.message.attachments
         .map(function (a) {
