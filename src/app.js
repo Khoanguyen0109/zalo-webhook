@@ -58,14 +58,7 @@ app.post('/api/webhook', async (req, res) => {
         .tz(new Date(), 'Asia/Ho_Chi_Minh')
         .format('DD/MM/YYYY , hh:mm A'),
     };
-    switch (req?.body?.event_name) {
-      case 'user_send_text':
-        console.log('user_send_text :>> ');
-        break;
 
-      default:
-        break;
-    }
     if (
       req?.body?.event_name === 'user_send_text' ||
       req?.body?.event_name === 'oa_send_text'
