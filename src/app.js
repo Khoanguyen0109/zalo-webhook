@@ -60,7 +60,10 @@ app.post('/api/webhook', async (req, res) => {
     };
     console.log('object', messageObject);
 
-    if (req?.body?.event_name === 'user_send_text') {
+    if (
+      req?.body?.event_name === 'user_send_text' ||
+      req?.body?.event_name === 'oa_send_text'
+    ) {
       await sheet.addRows([messageObject]);
     }
     if (
