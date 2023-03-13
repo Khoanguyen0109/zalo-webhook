@@ -64,7 +64,6 @@ app.post('/api/webhook', async (req, res) => {
       var matches = messag.match(/\[(.*?)\]/);
       if (matches) {
         const sheetName = matches[1];
-        console.log('object', submatch);
         const sheetCheckTime = doc.sheetsByTitle[sheetName];
         const result = messag.split(/\r?\n/);
         const map = {};
