@@ -61,8 +61,11 @@ app.post('/api/webhook', async (req, res) => {
 
     if (req?.body?.event_name === 'oa_send_text') {
       const messag = messageObject.message;
-      if (messag.includes('[chamcong]')) {
-        const sheetCheckTime = doc.sheetsByTitle['chamcong'];
+      var matches = messag.match(/\[(.*?)\]/);
+      if (matches) {
+        const sheetName = matches[1];
+        console.log('object', submatch);
+        const sheetCheckTime = doc.sheetsByTitle[sheetName];
         const result = messag.split(/\r?\n/);
         const map = {};
         result.forEach((row) => {
