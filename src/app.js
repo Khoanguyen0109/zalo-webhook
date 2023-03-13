@@ -58,12 +58,22 @@ app.post('/api/webhook', async (req, res) => {
         .tz(new Date(), 'Asia/Ho_Chi_Minh')
         .format('DD/MM/YYYY , hh:mm A'),
     };
-    console.log('object', messageObject);
 
-    if (
-      req?.body?.event_name === 'user_send_text' ||
-      req?.body?.event_name === 'oa_send_text'
-    ) {
+    if (req?.body?.event_name === 'oa_send_text') {
+      const sheetCheckTime = doc.sheetsByTitle['chamcong'];
+      const messag = messageObject.message;
+      const result = messag.split(/\r?\n/);
+      const map = {};
+      result.forEach((row) => {
+        const info = row.split(': ');
+        if (info[1]) {
+          map[info[0]] = info[1];
+        }
+      });
+      await sheetCheckTime.addRow(map);
+    }
+
+    if (req?.body?.event_name === 'user_send_text') {
       await sheet.addRows([messageObject]);
     }
     if (
