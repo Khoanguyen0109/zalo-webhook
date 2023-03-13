@@ -58,17 +58,14 @@ app.post('/api/webhook', async (req, res) => {
         .tz(new Date(), 'Asia/Ho_Chi_Minh')
         .format('DD/MM/YYYY , hh:mm A'),
     };
+    console.log('object', messageObject);
 
-    if (
-      req?.body?.event_name === 'user_send_text' ||
-      req?.body?.event_name === 'oa_send_text'
-    ) {
+    if (req?.body?.event_name === 'user_send_text') {
       await sheet.addRows([messageObject]);
     }
     if (
       req?.body?.event_name === 'user_send_image' ||
-      req?.body?.event_name === 'oa_send_image' ||
-      req?.body?.event_name === 'oa_send_list'
+      req?.body?.event_name === 'oa_send_image'
     ) {
       var atts = req.body.message.attachments
         .map(function (a) {
