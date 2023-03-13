@@ -60,17 +60,19 @@ app.post('/api/webhook', async (req, res) => {
     };
 
     if (req?.body?.event_name === 'oa_send_text') {
-      const sheetCheckTime = doc.sheetsByTitle['chamcong'];
       const messag = messageObject.message;
-      const result = messag.split(/\r?\n/);
-      const map = {};
-      result.forEach((row) => {
-        const info = row.split(': ');
-        if (info[1]) {
-          map[info[0]] = info[1];
-        }
-      });
-      await sheetCheckTime.addRow(map);
+      if (messag.includes('[chamcong]')) {
+        const sheetCheckTime = doc.sheetsByTitle['chamcong'];
+        const result = messag.split(/\r?\n/);
+        const map = {};
+        result.forEach((row) => {
+          const info = row.split(': ');
+          if (info[1]) {
+            map[info[0]] = info[1];
+          }
+        });
+        await sheetCheckTime.addRow(map);
+      }
     }
 
     if (
