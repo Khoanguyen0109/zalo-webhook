@@ -119,7 +119,7 @@ app.post("/api/webhook", async (req, res) => {
 
 // API Giai Pháp Số
 
-app.post("/api/webhook-gps", async () => {
+app.post("/api/webhook-gps", async (req, res) => {
   try {
     const doc = new GoogleSpreadsheet(
       "14eU98y_yazV36Cf0_KqyjCmEn8nJJqquqG1erAqwPsc"
