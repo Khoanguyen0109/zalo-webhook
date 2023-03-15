@@ -3,10 +3,12 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { rError } = require('./utils/respones');
 const dotenv = require('dotenv');
+const moment = require('moment-timezone');
 
 const morgan = require('morgan');
 // const { webhook } = require(" './api/controller';
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { format, toDate } = require('date-fns');
 
 global.APP = __dirname;
 dotenv.config();
@@ -26,10 +28,16 @@ app.use(bodyParser.json({ limit: '50mb' }));
 
 // app.post('/api/webhook', webhook);
 //htpps://goappscript.com/api/webhook
+////////////////////////////////
+app.get('/api/webhook', async (req, res) => {
+  return res.status(200).json({ array: [] });
+  // return res.status(200).json({ message: 'webhook' });
+});
+
 app.post('/api/webhook', async (req, res) => {
   try {
     const doc = new GoogleSpreadsheet(
-      '1vSJMqjPam1J3otjvsGA9WWWUKITYuskzf8LoDFT7axY'
+      '1RzTedxhXeK3OJq4RXs41HrgZj0gP1hlRrlsgkgpOfwo'
     );
 
     // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
@@ -40,25 +48,76 @@ app.post('/api/webhook', async (req, res) => {
       private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
     });
 
-    await doc.loadInfo(); // loads document properties and worksheets
-    switch (req.body.event_name) {
-      case 'user_send_text':
-        const sheet = doc.sheetsByIndex[0];
-        await sheet.addRows([
-          { userId: req.body.sender.id, message: req.body?.message?.text },
-        ]);
-        return res.status(200).json({ message: 'Success' });
+    const info = await doc.loadInfo(); // loads document properties and worksheets
+    const sheet = doc.sheetsByIndex[0];
+    const messageObject = {
+      event: req.body?.event_name,
+      userId: req.body?.sender?.id,
+      message: req.body?.message?.text,
+      timestamp: moment
+        .tz(new Date(), 'Asia/Ho_Chi_Minh')
+        .format('DD/MM/YYYY , hh:mm A'),
+    };
 
-      default:
-        break;
+    if (req?.body?.event_name === 'oa_send_text') {
+      const messag = messageObject.message;
+      var matches = messag.match(/\[(.*?)\]/);
+      if (matches) {
+        const sheetName = matches[1];
+        const sheetCheckTime = doc.sheetsByTitle[sheetName];
+        const result = messag.split(/\r?\n/);
+        const map = {};
+        result.forEach((row) => {
+          const info = row.split(': ');
+          if (info[1]) {
+            map[info[0]] = info[1];
+          }
+        });
+        await sheetCheckTime.addRow(map);
+      }
+    }
+
+    if (
+      req?.body?.event_name === 'user_send_text' ||
+      req?.body?.event_name === 'oa_send_text'
+    ) {
+      await sheet.addRows([messageObject]);
+    }
+    if (
+      req?.body?.event_name === 'user_send_image' ||
+      req?.body?.event_name === 'oa_send_image' ||
+      req?.body?.event_name === 'oa_send_list'
+    ) {
+      var atts = req.body.message.attachments
+        .map(function (a) {
+          return a.payload.thumbnail;
+        })
+        .join('\r\n');
+      await sheet.addRows([
+        {
+          ...messageObject,
+          attachment: atts,
+        },
+      ]);
+    }
+    if (req.body.event_name === 'user_send_location') {
+      var location = req.body.message.attachments[0].payload.coordinates;
+      await sheet.addRows([
+        {
+          ...messageObject,
+          latitude: location.latitude,
+          longitude: location.longitude,
+        },
+      ]);
     }
 
     return res.status(200).json({ message: 'webhook' });
   } catch (error) {
     console.log('error', error);
-    // comit
   }
 });
+
+///////////////////////////////////////////
 
 app.use((err, req, res, next) => {
   const { message, code, subcode, errorItems, error } = err;
