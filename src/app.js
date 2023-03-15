@@ -146,58 +146,6 @@ app.post("/api/webhook-gps", async (req, res) => {
         .format("DD/MM/YYYY , hh:mm A"),
     };
 
-    if (req?.body?.event_name === "oa_send_text") {
-      const messag = messageObject.message;
-      var matches = messag.match(/\[(.*?)\]/);
-      if (matches) {
-        const sheetName = matches[1];
-        const sheetCheckTime = doc.sheetsByTitle[sheetName];
-        const result = messag.split(/\r?\n/);
-        const map = {};
-        result.forEach((row) => {
-          const info = row.split(": ");
-          if (info[1]) {
-            map[info[0]] = info[1];
-          }
-        });
-        await sheetCheckTime.addRow(map);
-      }
-    }
-
-    if (
-      req?.body?.event_name === "user_send_text" ||
-      req?.body?.event_name === "oa_send_text"
-    ) {
-      await sheet.addRows([messageObject]);
-    }
-    if (
-      req?.body?.event_name === "user_send_image" ||
-      req?.body?.event_name === "oa_send_image" ||
-      req?.body?.event_name === "oa_send_list"
-    ) {
-      var atts = req.body.message.attachments
-        .map(function (a) {
-          return a.payload.thumbnail;
-        })
-        .join("\r\n");
-      await sheet.addRows([
-        {
-          ...messageObject,
-          attachment: atts,
-        },
-      ]);
-    }
-    if (req.body.event_name === "user_send_location") {
-      var location = req.body.message.attachments[0].payload.coordinates;
-      await sheet.addRows([
-        {
-          ...messageObject,
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-      ]);
-    }
-
     return res.status(200).json({ message: "webhook" });
   } catch (error) {
     console.log("error", error);
