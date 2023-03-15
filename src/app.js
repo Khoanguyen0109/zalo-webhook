@@ -31,7 +31,6 @@ app.use(bodyParser.json({ limit: "50mb" }));
 ////////////////////////////////
 app.get("/api/webhook", async (req, res) => {
   return res.status(200).json({ array: [] });
-  // return res.status(200).json({ message: 'webhook' });
 });
 
 app.post("/api/webhook", async (req, res) => {
@@ -118,6 +117,7 @@ app.post("/api/webhook", async (req, res) => {
   }
 });
 
+app.post("/api/webhook-gps", async () => {});
 ///////////////////////////////////////////
 
 app.use((err, req, res, next) => {
