@@ -107,7 +107,7 @@ router.post("/", async (req, res) => {
     );
     res.send("API Success");
   } catch (error) {
-    console.log("error :>> ", error);
+    console.log("error :>> ", error.response.data);
     res.sendStatus(500);
   }
 });
