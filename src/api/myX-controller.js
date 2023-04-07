@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
         `${myXEndpoint}/sections/getSections`,
         {
           IncludeArchived: true,
-          ProjectId: 372254,
+          ProjectId,
         },
         {
           headers,
@@ -72,7 +72,7 @@ router.post("/", async (req, res) => {
         `${myXEndpoint}/projects/getProjectMembers`,
         {
           IncludeArchived: true,
-          ProjectId: 372254,
+          ProjectId,
         },
         {
           headers,
@@ -83,6 +83,7 @@ router.post("/", async (req, res) => {
     const section = resSection.data.data.find(
       (item) => item.SectionName === SectionName
     )?.SectionId;
+    console.log('section :>> ', section);
     const assigned = resTeamMember.data.data.find(
       (item) => item.User.Email === EmailAssigned
     )?.UserId;
