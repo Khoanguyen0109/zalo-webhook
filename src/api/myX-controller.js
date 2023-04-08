@@ -3,25 +3,17 @@ const express = require("express");
 const https = require("https");
 const router = express.Router();
 
-router.post("/", async (req, res) => {
-  try {
-    const {
-      ProjectId,
-      SectionName,
-      EmailAssigned,
-      TaskName,
-      Description,
-      StartDate,
-      EndDate,
-    } = req.body;
+const myXEndpoint = "https://apiv2.myxteam.com";
+const httpsAgent = new https.Agent({
+  rejectUnauthorized: false,
+});
 
+const login = async () => {
+  try {
     const deviceId = "b766d6b-f120-454e-bafd-60f00ad23fe9111";
     const username = process.env.EMAIL_MY_X_TEAM_NOI_THAT;
     const password = process.env.PASSWORD_MY_X_TEAM_NOI_THAT;
-    const httpsAgent = new https.Agent({
-      rejectUnauthorized: false,
-    });
-    const myXEndpoint = "https://apiv2.myxteam.com";
+
     const {
       data: {
         data: { AccessToken },
@@ -39,6 +31,25 @@ router.post("/", async (req, res) => {
         httpsAgent,
       }
     );
+    return AccessToken;
+  } catch (error) {
+    console.log("error :>> ", error);
+  }
+};
+
+router.post("/", async (req, res) => {
+  try {
+    const {
+      ProjectId,
+      SectionName,
+      EmailAssigned,
+      TaskName,
+      Description,
+      StartDate,
+      EndDate,
+    } = req.body;
+    const AccessToken = await login();
+
     const headers = {
       Authorization: `Bearer ${AccessToken}`,
     };
@@ -83,7 +94,7 @@ router.post("/", async (req, res) => {
     const section = resSection.data.data.find(
       (item) => item.SectionName === SectionName
     )?.SectionId;
-    console.log('section :>> ', section);
+    console.log("section :>> ", section);
     const assigned = resTeamMember.data.data.find(
       (item) => item.User.Email === EmailAssigned
     )?.UserId;
@@ -108,7 +119,63 @@ router.post("/", async (req, res) => {
     );
     res.send("API Success");
   } catch (error) {
-    console.log("error :>> ", error.response.data);
+    console.log("error :>> ", error);
+    console.log("error :>> ", error?.response?.data);
+    res.sendStatus(500);
+  }
+});
+
+router.post("/finished", async (req, res) => {
+  try {
+    const { TaskId, Links, Comment } = req.body;
+
+    const AccessToken = await login();
+
+    const headers = {
+      Authorization: `Bearer ${AccessToken}`,
+    };
+    const mapLinks = Links.map((item) => ({ Link: item }));
+    await Promise.all([
+      axios.post(
+        `${myXEndpoint}/Files/addFiles`,
+        {
+          TaskId,
+          Files: mapLinks,
+        },
+        {
+          headers,
+          httpsAgent,
+        }
+      ),
+      axios.post(
+        `${myXEndpoint}/tasks/addComment`,
+        {
+          TaskId,
+          Content: Comment,
+        },
+        {
+          headers,
+          httpsAgent,
+        }
+      ),
+      axios.post(
+        `${myXEndpoint}/tasks/updateTaskCompleted`,
+        {
+          TaskId,
+          IsCompleted: true,
+        },
+        {
+          headers,
+          httpsAgent,
+        }
+      ),
+    ]);
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.log("error :>> ", error);
+    console.log("error :>> ", error?.response?.data);
+
     res.sendStatus(500);
   }
 });
