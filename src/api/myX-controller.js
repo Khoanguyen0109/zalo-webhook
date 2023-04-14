@@ -8,11 +8,10 @@ const httpsAgent = new https.Agent({
   rejectUnauthorized: false,
 });
 
-const login = async () => {
+const login = async (user_id_myxteam, password) => {
   try {
     const deviceId = "b766d6b-f120-454e-bafd-60f00ad23fe9111";
-    const username = process.env.EMAIL_MY_X_TEAM_NOI_THAT;
-    const password = process.env.PASSWORD_MY_X_TEAM_NOI_THAT;
+    const username = user_id_myxteam;
 
     const {
       data: {
@@ -47,12 +46,15 @@ router.post("/", async (req, res) => {
       Description,
       StartDate,
       EndDate,
+      password,
+      user_id_myxteam,
     } = req.body;
-    const AccessToken = await login();
+    const AccessToken = await login(user_id_myxteam, password);
 
     const headers = {
       Authorization: `Bearer ${AccessToken}`,
     };
+    console.log("ProjectId :>> ", ProjectId);
     const resProject = await axios.post(
       `${myXEndpoint}/projects/getProject`,
       {
@@ -63,8 +65,8 @@ router.post("/", async (req, res) => {
         httpsAgent,
       }
     );
-    if (!resProject.data.data.ProjectId) {
-      res.sendStatus(400).json("Project not found");
+    if (!resProject.data.data?.ProjectId) {
+      res.sendStatus(400).json({ msg: "Project not found" });
     }
 
     const [resSection, resTeamMember] = await Promise.all([
@@ -106,8 +108,13 @@ router.post("/", async (req, res) => {
         SectionId: section,
         AssignedId: assigned,
         Description: `<p>${Description}</p>`,
-        StartDateUnix: Math.floor(new Date(StartDate.replace(/(\d+[/])(\d+[/])/, '$2$1')).getTime() / 1000),
-        DueDateUnix: Math.floor(new Date(EndDate.replace(/(\d+[/])(\d+[/])/, '$2$1')).getTime() / 1000),
+        StartDateUnix: Math.floor(
+          new Date(StartDate.replace(/(\d+[/])(\d+[/])/, "$2$1")).getTime() /
+            1000
+        ),
+        DueDateUnix: Math.floor(
+          new Date(EndDate.replace(/(\d+[/])(\d+[/])/, "$2$1")).getTime() / 1000
+        ),
         Followers: [],
         IsComplete: false,
       },
@@ -126,9 +133,9 @@ router.post("/", async (req, res) => {
 
 router.post("/finished", async (req, res) => {
   try {
-    const { TaskId, Links, Comment } = req.body;
+    const { TaskId, Links, Comment, password ,user_id_myxteam } = req.body;
 
-    const AccessToken = await login();
+    const AccessToken = await login(user_id_myxteam,password );
 
     const headers = {
       Authorization: `Bearer ${AccessToken}`,
