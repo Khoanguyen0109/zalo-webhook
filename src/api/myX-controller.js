@@ -94,7 +94,6 @@ router.post("/", async (req, res) => {
     const section = resSection.data.data.find(
       (item) => item.SectionName === SectionName
     )?.SectionId;
-    console.log("section :>> ", section);
     const assigned = resTeamMember.data.data.find(
       (item) => item.User.Email === EmailAssigned
     )?.UserId;
@@ -107,8 +106,8 @@ router.post("/", async (req, res) => {
         SectionId: section,
         AssignedId: assigned,
         Description: `<p>${Description}</p>`,
-        StartDateUnix: Math.floor(new Date(StartDate).getTime() / 1000),
-        DueDateUnix: Math.floor(new Date(EndDate).getTime() / 1000),
+        StartDateUnix: Math.floor(new Date(StartDate.replace(/(\d+[/])(\d+[/])/, '$2$1')).getTime() / 1000),
+        DueDateUnix: Math.floor(new Date(EndDate.replace(/(\d+[/])(\d+[/])/, '$2$1')).getTime() / 1000),
         Followers: [],
         IsComplete: false,
       },
