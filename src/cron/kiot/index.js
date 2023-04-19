@@ -114,17 +114,15 @@ const doJob = async () => {
   const start = Date.now();
 
   try {
-    const id = "1Q2VJKuSMh6WI-TPIi1v1fPxDx8ZeY5i92lhYdV_I6FA";
     const data = await axios.get(
       "https://script.google.com/macros/s/AKfycbzwIkiHFVQ4IPoO-ufXwrxm4bVNgblTy4RViHXq1shvOtQfF6P-5va1cTyNySdcaOWs/exec"
     );
-    const { id_sheet_1, id_sheet_2, id_sheet_3, client_email, private_key } =
+    const { id_sheet_1, client_email, private_key } =
       data.data.data[0];
     doc = await getDoc(id_sheet_1, client_email, private_key);
     const auth = await axios(authConfig);
     accessToken = auth.data.access_token;
     console.log("accessToken", accessToken);
-    console.log("id_sheet_3", id_sheet_3);
     authHeader = {
       headers: {
         Authorization: "Bearer " + accessToken, //the token is a variable which holds the token
@@ -134,14 +132,11 @@ const doJob = async () => {
     sleep(1000);
     const [total, totalInvoice] = await Promise.all([
       getTotalProducts(authHeader),
-      getTotalInvoice(authHeader),
     ]);
     console.log("getTotalProducts", total);
-    console.log("getTotalInvoice", totalInvoice);
 
     const PRODUCT_PER_PAGE = 100;
     const page = Math.ceil(total / PRODUCT_PER_PAGE);
-    const pageInvoice = Math.ceil(totalInvoice / PRODUCT_PER_PAGE);
 
     const sheet = doc.sheetsByIndex[0];
     await Promise.all([sheet.clearRows()]);
