@@ -13,6 +13,7 @@ const moment = require("moment-timezone");
 const myXTeam = require("./api/myX-controller");
 const noiThat = require("./api/noi-that-controller");
 const gps = require("./api/gps-controller");
+const renderFrom = require("./api/render-form");
 
 global.APP = __dirname;
 dotenv.config();
@@ -33,6 +34,8 @@ app.use("/api/webhook", noiThat);
 
 app.use("/api/webhook-gps", gps);
 app.use("/myXteam", myXTeam);
+
+app.use('/render-form', renderFrom)
 app.use((err, req, res, next) => {
   const { message, code, subcode, errorItems, error } = err;
 
