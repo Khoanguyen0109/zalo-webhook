@@ -14,6 +14,7 @@ const myXTeam = require("./api/myX-controller");
 const noiThat = require("./api/noi-that-controller");
 const gps = require("./api/gps-controller");
 const renderFrom = require("./api/render-form");
+const custom = require("./api/custom-controller");
 
 global.APP = __dirname;
 dotenv.config();
@@ -34,6 +35,7 @@ app.use("/api/webhook", noiThat);
 
 app.use("/api/webhook-gps", gps);
 app.use("/myXteam", myXTeam);
+app.use("/custom", custom);
 
 app.use('/render-form', renderFrom)
 app.use((err, req, res, next) => {
