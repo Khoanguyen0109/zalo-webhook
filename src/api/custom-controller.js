@@ -37,7 +37,7 @@ router.post("/copy-sheet-data", async (req, res) => {
 
 router.post("/get-sheet-data", async (req, res) => {
   try {
-    const { spreadsheetId, rangeRead, spreadsheetIdWrite, rangeWrite } =
+    const { spreadsheetId, rangeRead} =
       req.body;
 
     const auth = await getAuthToken();
