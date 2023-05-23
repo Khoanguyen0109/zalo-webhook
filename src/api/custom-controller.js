@@ -46,7 +46,8 @@ router.post("/get-sheet-data", async (req, res) => {
       auth,
       range: rangeRead,
     });
-    return res.status(200).json({ data: response.data });
+    const valueRead = response.data.values;
+    return res.status(200).json({valueRead});
   } catch (error) {
     console.log("error", error);
   }
