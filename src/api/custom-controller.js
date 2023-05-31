@@ -27,7 +27,7 @@ router.post("/copy-sheet-data", async (req, res) => {
       auth,
       range: rangeWrite,
       values: valueRead,
-      range_clear:rangeClear,
+      rangeClear:rangeClear,
     });
     console.log('valueRead', valueRead)
     return res.status(200).json({ data: response.data });
