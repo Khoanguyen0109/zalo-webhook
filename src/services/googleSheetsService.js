@@ -34,10 +34,20 @@ async function updateSheetValues({ spreadsheetId, auth, range, values,rangeClear
       auth,
       rangeClear
     });
-  
-  
+ 
 console.log(res_delete,rangeClear)
-  return res_delete
+   const res = await sheets.spreadsheets.values.update({
+    spreadsheetId,
+    auth,
+    range,
+    valueInputOption: "USER_ENTERED",
+    requestBody: {
+      range,
+      values
+    },
+  });
+
+  return res;
 }
 
 module.exports = {
