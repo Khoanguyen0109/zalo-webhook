@@ -29,7 +29,6 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
 }
 
 async function updateSheetValues({ spreadsheetId, auth, range, values }) {
-  const values1 = values.map(row => row.map(cell => parseFloat(cell)));
   const res = await sheets.spreadsheets.values.update({
     spreadsheetId,
     auth,
@@ -37,11 +36,11 @@ async function updateSheetValues({ spreadsheetId, auth, range, values }) {
     valueInputOption: "FORMATTED_VALUE",
     requestBody: {
       range,
-      values1
+      values
     },
   });
-   const values = res.data.values;
-  const numericValues = values.map(row => row.map(cell => parseFloat(cell)));
+   const values_1 = res.data.values;
+  const numericValues = values_1.map(row => row.map(cell => parseFloat(cell)));
 
   return numericValues;
 //   return res
