@@ -29,6 +29,7 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
 }
 
 async function updateSheetValues({ spreadsheetId, auth, range, values }) {
+  const values = values.map(row => row.map(cell => parseFloat(cell)));
   const res = await sheets.spreadsheets.values.update({
     spreadsheetId,
     auth,
