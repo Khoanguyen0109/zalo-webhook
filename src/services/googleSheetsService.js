@@ -28,13 +28,11 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
   return res;
 }
 
-async function updateSheetValues({ spreadsheetId, auth, range, values,rangeClear  }) {
-  const res_delete = await sheets.spreadsheets.values.batchClear({
+async function updateSheetValues({ spreadsheetId, auth, range, values,rangeClear}) {
+  const res_delete = awaitawait sheets.spreadsheets.values.clear({
       spreadsheetId,
       auth,
-      requestBody: {
-        ranges: [rangeClear]
-      }
+      rangeClear
     });
   
   
