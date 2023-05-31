@@ -29,7 +29,7 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
 }
 
 async function updateSheetValues({ spreadsheetId, auth, range, values }) {
-  const values = values.map(row => row.map(cell => parseFloat(cell)));
+  const values1 = values.map(row => row.map(cell => parseFloat(cell)));
   const res = await sheets.spreadsheets.values.update({
     spreadsheetId,
     auth,
@@ -37,7 +37,7 @@ async function updateSheetValues({ spreadsheetId, auth, range, values }) {
     valueInputOption: "USER_ENTERED",
     requestBody: {
       range,
-      values
+      values1
     },
   });
   return res
