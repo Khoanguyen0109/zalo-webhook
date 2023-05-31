@@ -12,7 +12,7 @@ const {
 
 router.post("/copy-sheet-data", async (req, res) => {
   try {
-    const { spreadsheetId, rangeRead, spreadsheetIdWrite, rangeWrite } =
+    const { spreadsheetId, rangeRead, spreadsheetIdWrite, rangeWrite, rangeClear } =
       req.body;
 
     const auth = await getAuthToken();
@@ -27,6 +27,7 @@ router.post("/copy-sheet-data", async (req, res) => {
       auth,
       range: rangeWrite,
       values: valueRead,
+      range_clear:rangeClear,
     });
     console.log('valueRead', valueRead)
     return res.status(200).json({ data: response.data });
