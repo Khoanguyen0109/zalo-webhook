@@ -29,23 +29,23 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
 }
 
 async function updateSheetValues({ spreadsheetId, auth, range, values,rangeClear  }) {
-  await sheets.spreadsheets.values.clear({
+  const res_delete = await sheets.spreadsheets.values.clear({
       spreadsheetId,
       auth,
       rangeClear
     });
   
-  const res = await sheets.spreadsheets.values.update({
-    spreadsheetId,
-    auth,
-    range,
-    valueInputOption: "USER_ENTERED",
-    requestBody: {
-      range,
-      values
-    },
-  });
-  return res
+//   const res = await sheets.spreadsheets.values.update({
+//     spreadsheetId,
+//     auth,
+//     range,
+//     valueInputOption: "USER_ENTERED",
+//     requestBody: {
+//       range,
+//       values
+//     },
+//   });
+  return res_delete
 }
 
 module.exports = {
