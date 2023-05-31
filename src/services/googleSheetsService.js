@@ -39,11 +39,11 @@ async function updateSheetValues({ spreadsheetId, auth, range, values }) {
       values
     },
   });
-   const values_1 = res.data.values;
-  const numericValues = values_1.map(row => row.map(cell => parseFloat(cell)));
+//    const values_1 = res.data.values;
+//   const numericValues = values_1.map(row => row.map(cell => parseFloat(cell)));
 
-  return numericValues;
-//   return res
+//   return numericValues;
+  return res
 }
 
 module.exports = {
