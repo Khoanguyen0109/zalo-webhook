@@ -32,7 +32,7 @@ async function updateSheetValues({ spreadsheetId, auth, range, values }) {
   await sheets.spreadsheets.values.clear({
       spreadsheetId,
       auth,
-      range
+      "getData!A4:J100"
     });
   
   const res = await sheets.spreadsheets.values.update({
