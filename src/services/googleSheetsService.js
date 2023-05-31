@@ -36,16 +36,7 @@ async function updateSheetValues({ spreadsheetId, auth, range, values,rangeClear
     });
   
   
-//   const res = await sheets.spreadsheets.values.update({
-//     spreadsheetId,
-//     auth,
-//     range,
-//     valueInputOption: "USER_ENTERED",
-//     requestBody: {
-//       range,
-//       values
-//     },
-//   });
+console.log(res_delete,rangeClear)
   return res_delete
 }
 
