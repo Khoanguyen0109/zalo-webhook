@@ -29,6 +29,12 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
 }
 
 async function updateSheetValues({ spreadsheetId, auth, range, values }) {
+  await sheets.spreadsheets.values.clear({
+      spreadsheetId,
+      auth,
+      range
+    });
+  
   const res = await sheets.spreadsheets.values.update({
     spreadsheetId,
     auth,
