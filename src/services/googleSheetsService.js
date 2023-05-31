@@ -28,11 +28,11 @@ async function getSpreadSheetValues({ spreadsheetId, auth, range }) {
   return res;
 }
 
-async function updateSheetValues({ spreadsheetId, auth, range, values }) {
+async function updateSheetValues({ spreadsheetId, auth, range, values,rangeClear  }) {
   await sheets.spreadsheets.values.clear({
       spreadsheetId,
       auth,
-      range
+      rangeClear
     });
   
   const res = await sheets.spreadsheets.values.update({
