@@ -33,16 +33,12 @@ async function updateSheetValues({ spreadsheetId, auth, range, values }) {
     spreadsheetId,
     auth,
     range,
-    valueInputOption: "FORMATTED_VALUE",
+    valueInputOption: "USER_ENTERED",
     requestBody: {
       range,
       values
     },
   });
-//    const values_1 = res.data.values;
-//   const numericValues = values_1.map(row => row.map(cell => parseFloat(cell)));
-
-//   return numericValues;
   return res
 }
 
