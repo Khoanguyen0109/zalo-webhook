@@ -33,7 +33,7 @@ async function updateSheetValues({ spreadsheetId, auth, range, values }) {
     spreadsheetId,
     auth,
     range,
-    valueInputOption: "USER_ENTERED",
+    valueInputOption: "RAW",
     requestBody: {
       range,
       values
