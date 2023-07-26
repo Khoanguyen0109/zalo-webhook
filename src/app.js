@@ -15,11 +15,12 @@ const noiThat = require("./api/noi-that-controller");
 const gps = require("./api/gps-controller");
 const renderFrom = require("./api/render-form");
 const custom = require("./api/custom-controller");
+const booking = require("./api/booking");
 
 global.APP = __dirname;
 dotenv.config();
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
 // CORS origin
 app.use(cors());
@@ -36,8 +37,8 @@ app.use("/api/webhook", noiThat);
 app.use("/api/webhook-gps", gps);
 app.use("/myXteam", myXTeam);
 app.use("/custom", custom);
-
-app.use('/render-form', renderFrom)
+app.use("/booking", booking);
+app.use("/render-form", renderFrom);
 app.use((err, req, res, next) => {
   const { message, code, subcode, errorItems, error } = err;
 
