@@ -73,11 +73,13 @@ router.post("/", async (req, res) => {
     });
     await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByTitle["dat_ve"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    const details = doc.sheetsByTitle["chi_tiet_dat_ve"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+
     const date = DateTime.local();
     var rezoned = date.setZone("Asia/Ho_Chi_Minh");
-
+    const id_ve = uuidv4();
     await sheet.addRow({
-      id_ve: uuidv4(),
+      id_ve,
       thoi_gian_dat: rezoned.toFormat("dd/MM/yyyy, HH:mm"),
       id_xuat_chieu: play,
       so_dien_thoai: phone,
@@ -86,7 +88,14 @@ router.post("/", async (req, res) => {
       so_luong_ghe: seats.length,
       tong_tien: tong_tien,
     });
-    return res.sendStatus(200);
+
+    seats.forEach((item) => {
+      details.addRow({
+        id_ve,
+        ma_ghe: item,
+      });
+    });
+    return res.status(200).json({ data: "success" });
   } catch (error) {
     console.log("error", error);
     res.sendStatus(500);
