@@ -4,6 +4,7 @@ const { GoogleSpreadsheet } = require("google-spreadsheet");
 const { format, toDate } = require("date-fns");
 const moment = require("moment-timezone");
 const { v4: uuidv4 } = require("uuid");
+const { DateTime } = require("luxon");
 
 const sheetId = "1ZfiCYOUYQ9hmTr5ruDWINu8-DIQIkICrEmW7BFHTvrA";
 
@@ -30,10 +31,10 @@ const getBookedSeats = async (id_xuat_chieu) => {
     tong_tien: item.tong_tien,
     trang_thai: item.trang_thai,
   }));
+
   const ticketIds = tickets
-    .filter((tic) => tic?.id_xuat_chieu.toString() === id_xuat_chieu)
+    .filter((tic) => tic?.id_xuat_chieu.toString() === id_xuat_chieu.toString())
     .map((item) => item.id_ve);
-  console.log("ticketIds", ticketIds);
   const details = await (
     await detailsSheet.getRows()
   ).map((item) => ({
@@ -52,15 +53,18 @@ const getBookedSeats = async (id_xuat_chieu) => {
 router.post("/", async (req, res) => {
   try {
     const { seats, name, email, phone, play, tong_tien } = req.body;
-    const bookedSeats = await getBookedSeats(id_xuat_chieu);
+    const bookedSeats = await getBookedSeats(play);
     const bookedError = [];
+    if (!seats || seats.length === 0) {
+      return res.status(400).json({ booked: [] });
+    }
     seats.forEach((item) => {
-      if (bookedSeats.includes(seats)) {
-        bookedError.push(seats);
+      if (bookedSeats.includes(item)) {
+        bookedError.push(item);
       }
     });
     if (bookedError.length > 0) {
-      res.status(400).json({ booked: bookedError });
+      return res.status(400).json({ booked: bookedError });
     }
     const doc = new GoogleSpreadsheet(sheetId);
     await doc.useServiceAccountAuth({
@@ -74,7 +78,7 @@ router.post("/", async (req, res) => {
 
     await sheet.addRow({
       id_ve: uuidv4(),
-      thoi_gian_dat: rezoned.toFormat("dd/MM/yyy, HH:mm"),
+      thoi_gian_dat: rezoned.toFormat("dd/MM/yyyy, HH:mm"),
       id_xuat_chieu: play,
       so_dien_thoai: phone,
       nguoi_dat: name,
@@ -84,7 +88,7 @@ router.post("/", async (req, res) => {
     });
     return res.sendStatus(200);
   } catch (error) {
-    console.log("object :>> ", error);
+    console.log("error", error);
     res.sendStatus(500);
   }
 });
