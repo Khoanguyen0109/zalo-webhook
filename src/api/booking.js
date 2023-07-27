@@ -95,7 +95,43 @@ router.post("/", async (req, res) => {
         ma_ghe: item,
       });
     });
-    return res.status(200).json({ data: "success" });
+    return res.status(200).json({ status: 200, data: "success" });
+  } catch (error) {
+    console.log("error", error);
+    res.sendStatus(500);
+  }
+});
+
+router.post("/check-voucher", async (req, res) => {
+  try {
+    const { voucher } = req.body;
+    const doc = new GoogleSpreadsheet(sheetId);
+    await doc.useServiceAccountAuth({
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_RENDER_FORM,
+      private_key: process.env.GOOGLE_PRIVATE_KEY_RENDER_FORM,
+    });
+    await doc.loadInfo(); // loads document properties and worksheets
+    const sheet = doc.sheetsByTitle["voucher"]; // or
+    const rows = await (
+      await sheet.getRows()
+    ).map((item) => ({
+      code_voucher: item.code_voucher,
+      gia_giam: item.gia_giam,
+      exp: item.exp,
+    }));
+    const date = DateTime.local();
+    var rezoned = date.setZone("Asia/Ho_Chi_Minh");
+    const discountItem = rows.find(
+      (item) =>
+        item.code_voucher === voucher && new DateTime(item.exp) >= rezoned
+    );
+    if (discountItem) {
+      return res
+        .status(200)
+        .json({ status: 200, discount: discountItem.gia_giam });
+    } else {
+      return res.status(404).json({ status: 404, discount: null });
+    }
   } catch (error) {
     console.log("error", error);
     res.sendStatus(500);
