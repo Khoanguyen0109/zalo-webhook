@@ -191,7 +191,7 @@ router.get("/booked-seats/:id_xuat_chieu", async (req, res, next) => {
   }
 });
 
-router.get("/banner", async (req, res, next) => {
+router.get("/info", async (req, res, next) => {
   try {
     const doc = new GoogleSpreadsheet(sheetId);
     await doc.useServiceAccountAuth({
@@ -203,7 +203,13 @@ router.get("/banner", async (req, res, next) => {
     const rows = await sheet.getRows(); // can pass in { limit, offset }
     if (rows.length > 0) {
       const banner = rows[0].banner;
-      return res.status(200).json({ banner });
+      return res.status(200).json({
+        data: {
+          banner,
+          bank: rows[0]?.bank || "",
+          stk: rows[0]?.stk || "",
+        },
+      });
     }
     return res.sendStatus(404);
   } catch (error) {
