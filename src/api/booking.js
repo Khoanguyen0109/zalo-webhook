@@ -194,7 +194,6 @@ router.get("/booked-seats/:id_xuat_chieu", async (req, res, next) => {
 router.get("/banner", async (req, res, next) => {
   try {
     const doc = new GoogleSpreadsheet(sheetId);
-    // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
     await doc.useServiceAccountAuth({
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_RENDER_FORM,
       private_key: process.env.GOOGLE_PRIVATE_KEY_RENDER_FORM,
@@ -203,7 +202,7 @@ router.get("/banner", async (req, res, next) => {
     const sheet = doc.sheetsByTitle["thong_tin"];
     const rows = await sheet.getRows(); // can pass in { limit, offset }
     if (rows.length > 0) {
-      const banner = rows[0].get("banner");
+      const banner = rows[0].banner;
       return res.status(200).json({ banner });
     }
     return res.sendStatus(404);
