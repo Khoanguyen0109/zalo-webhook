@@ -208,6 +208,7 @@ router.get("/info", async (req, res, next) => {
           banner,
           bank: rows[0]?.bank || "",
           stk: rows[0]?.stk || "",
+          account: rows[0]?.account || "",
         },
       });
     }
