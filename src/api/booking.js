@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { GoogleSpreadsheet } = require("google-spreadsheet");
-const { format, toDate } = require("date-fns");
-const moment = require("moment-timezone");
+
 const { v4: uuidv4 } = require("uuid");
 const { DateTime } = require("luxon");
 
@@ -50,7 +49,7 @@ const getBookedSeats = async (id_xuat_chieu) => {
   });
   return bookedSeats;
 };
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const { seats, name, email, phone, play, tong_tien } = req.body;
     const bookedSeats = await getBookedSeats(play);
@@ -97,12 +96,11 @@ router.post("/", async (req, res) => {
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
-    console.log("error", error);
-    res.sendStatus(500);
+    next(error);
   }
 });
 
-router.post("/check-voucher", async (req, res) => {
+router.post("/check-voucher", async (req, res, next) => {
   try {
     const { voucher } = req.body;
     const doc = new GoogleSpreadsheet(sheetId);
@@ -133,12 +131,11 @@ router.post("/check-voucher", async (req, res) => {
       return res.status(404).json({ status: 404, discount: null });
     }
   } catch (error) {
-    console.log("error", error);
-    res.sendStatus(500);
+    next(error);
   }
 });
 
-router.get("/seats", async (req, res) => {
+router.get("/seats", async (req, res, next) => {
   try {
     const doc = new GoogleSpreadsheet(sheetId);
     // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
@@ -156,12 +153,11 @@ router.get("/seats", async (req, res) => {
     }));
     return res.status(200).json({ data: rows });
   } catch (error) {
-    console.log("object :>> ", error);
-    res.sendStatus(500);
+    next(error);
   }
 });
 
-router.get("/show-times", async (req, res) => {
+router.get("/show-times", async (req, res, next) => {
   try {
     const doc = new GoogleSpreadsheet(sheetId);
     // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
@@ -181,19 +177,38 @@ router.get("/show-times", async (req, res) => {
     }));
     return res.status(200).json({ data: rows });
   } catch (error) {
-    console.log("object :>> ", error);
-    res.sendStatus(500);
+    next(error);
   }
 });
 
-router.get("/booked-seats/:id_xuat_chieu", async (req, res) => {
+router.get("/booked-seats/:id_xuat_chieu", async (req, res, next) => {
   try {
     const { id_xuat_chieu } = req.params;
     const bookedSeats = await getBookedSeats(id_xuat_chieu);
     return res.status(200).json({ data: bookedSeats });
   } catch (error) {
-    console.log("object :>> ", error);
-    res.sendStatus(500);
+    next(error);
+  }
+});
+
+router.get("/banner", async (req, res, next) => {
+  try {
+    const doc = new GoogleSpreadsheet(sheetId);
+    // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
+    await doc.useServiceAccountAuth({
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_RENDER_FORM,
+      private_key: process.env.GOOGLE_PRIVATE_KEY_RENDER_FORM,
+    });
+    await doc.loadInfo(); // loads document properties and worksheets
+    const sheet = doc.sheetsByTitle["thong_tin"];
+    const rows = await sheet.getRows(); // can pass in { limit, offset }
+    if (rows.length > 0) {
+      const banner = rows[0].get("banner");
+      return res.status(200).json({ banner });
+    }
+    return res.sendStatus(404);
+  } catch (error) {
+    next(error);
   }
 });
 

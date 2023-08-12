@@ -5,14 +5,6 @@ const { DateTime } = require("luxon");
 
 const sheetId = "1PLqqsULtgq2DOv0ttonmZS849hytp_ZfGFRbJNu5GwM";
 
-router.post("/createUser", async (req, res) => {
-  const user = req.body.name;
-  const hashedPassword = await bcrypt.hash(req.body.password, 10);
-  users.push({ user: user, password: hashedPassword });
-  res.status(201).send(users);
-  console.log(users);
-});
-
 router.post("/api/login", async (req, res) => {
   try {
     const { username, password } = req.body;
@@ -59,7 +51,7 @@ router.get("/api/form-template", async (req, res) => {
     const user = rowsUser.find((item) => item.username === username);
     const data = [];
     const sheet = doc.sheetsByTitle["parent_form"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
-    const rows = await (
+    await (
       await sheet.getRows()
     ).map((item) => {
       if (item.category === user.category || user.category === "admin") {
@@ -84,7 +76,7 @@ router.get("/api/form-template", async (req, res) => {
 
 router.get("/api/form-template/:id", async (req, res) => {
   try {
-    const {id} = req.params
+    const { id } = req.params;
     const doc = new GoogleSpreadsheet(sheetId);
     // Initialize Auth - see https://theoephraim.github.io/node-google-spreadsheet/#/getting-started/authentication
     await doc.useServiceAccountAuth({
@@ -94,7 +86,7 @@ router.get("/api/form-template/:id", async (req, res) => {
     await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByTitle["form_template"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
     const data = [];
-    const rows = await (
+    await (
       await sheet.getRows()
     ).map((item) => {
       if (item.id_form_template === id) {
@@ -225,7 +217,7 @@ router.post("/api/form", async (req, res) => {
       user_id: userId,
       user_name: userName,
       // created_date: format(new Date(), "dd/MM/yyyy , HH:mm"),
-      created_date: rezoned.toFormat("dd/MM/yyy, HH:mm"),
+      created_date: rezoned.toFormat("dd/MM/yyyy, HH:mm"),
     });
     return res.sendStatus(200);
   } catch (error) {
