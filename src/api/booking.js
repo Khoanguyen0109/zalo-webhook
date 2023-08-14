@@ -149,7 +149,7 @@ router.get("/seats", async (req, res, next) => {
       await sheet.getRows()
     ).map((item) => ({
       ma_ghe: item.ma_ghe,
-      gia_ve: item.gia_ve,
+      gia_ve: item.gia_ve.replace(',','').replace('.',','),
     }));
     return res.status(200).json({ data: rows });
   } catch (error) {
