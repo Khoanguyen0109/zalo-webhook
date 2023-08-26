@@ -49,6 +49,30 @@ const getBookedSeats = async (id_xuat_chieu) => {
   });
   return bookedSeats;
 };
+
+router.post("/check-booked", async (req, res, next) => {
+  try {
+    const { seats, play } = req.body;
+
+    const bookedSeats = await getBookedSeats(play);
+    const bookedError = [];
+    if (!seats || seats.length === 0) {
+      return res.status(400).json({ booked: [] });
+    }
+    seats.forEach((item) => {
+      if (bookedSeats.includes(item)) {
+        bookedError.push(item);
+      }
+    });
+    if (bookedError.length > 0) {
+      return res.status(400).json({ booked: bookedError });
+    }
+    return res.status(200).json({ status: 200, data: "success" });
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.post("/", async (req, res, next) => {
   try {
     const { seats, name, email, phone, play, tong_tien } = req.body;
@@ -149,7 +173,7 @@ router.get("/seats", async (req, res, next) => {
       await sheet.getRows()
     ).map((item) => ({
       ma_ghe: item.ma_ghe,
-      gia_ve: item.gia_ve.replace(',','').replace('.',','),
+      gia_ve: item.gia_ve.replace(",", "").replace(".", ","),
     }));
     return res.status(200).json({ data: rows });
   } catch (error) {
