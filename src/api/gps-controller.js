@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { GoogleSpreadsheet } = require("google-spreadsheet");
-const { format, toDate } = require("date-fns");
 const moment = require("moment-timezone");
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   try {
     const doc = new GoogleSpreadsheet(
       "14eU98y_yazV36Cf0_KqyjCmEn8nJJqquqG1erAqwPsc"
@@ -26,8 +25,7 @@ router.post("/", async (req, res) => {
       private_key: key.replace(/\\n/g, "\n"),
     });
 
-    const info = await doc.loadInfo(); // loads document properties and worksheets
-    const sheet = doc.sheetsByIndex[0];
+    await doc.loadInfo(); // loads document properties and worksheets
     const messageObject = {
       event: req.body?.event_name,
       userId: req.body?.sender?.id,
@@ -36,7 +34,6 @@ router.post("/", async (req, res) => {
         .tz(new Date(), "Asia/Ho_Chi_Minh")
         .format("DD/MM/YYYY , hh:mm A"),
     };
-    console.log(req.body);
     if (req?.body?.event_name === "oa_send_text") {
       const messag = messageObject.message;
       var matches = messag.match(/\[(.*?)\]/);
@@ -91,6 +88,7 @@ router.post("/", async (req, res) => {
 
     return res.status(200).json({ message: "webhook" });
   } catch (error) {
+    next(error);
     console.log("error", error);
     console.log("error", error);
   }

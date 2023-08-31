@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const { GoogleSpreadsheet } = require("google-spreadsheet");
-const { format, toDate } = require("date-fns");
 const moment = require("moment-timezone");
 
-router.post("/", async (req, res) => {
+router.post("/", async (req, res, next) => {
   // https://docs.google.com/spreadsheets/d/1rYYWmg1coPDofMtWI-687tUpJ3kz2LuUqDqCxEI02VI/edit#gid=0
   try {
     const doc = new GoogleSpreadsheet(
@@ -23,7 +22,7 @@ router.post("/", async (req, res) => {
       private_key: key.replace(/\\n/g, "\n"),
     });
 
-    const info = await doc.loadInfo(); // loads document properties and worksheets
+    await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByIndex[0];
     const messageObject = {
       event: req.body?.event_name,
@@ -90,6 +89,7 @@ router.post("/", async (req, res) => {
   } catch (error) {
     console.log("error", error);
     console.log("error", error);
+    next(error);
   }
 });
 module.exports = router;
