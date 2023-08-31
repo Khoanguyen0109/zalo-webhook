@@ -23,7 +23,6 @@ router.post("/", async (req, res, next) => {
     });
 
     await doc.loadInfo(); // loads document properties and worksheets
-    const sheet = doc.sheetsByIndex[0];
     const messageObject = {
       event: req.body?.event_name,
       userId: req.body?.sender?.id,
@@ -32,7 +31,6 @@ router.post("/", async (req, res, next) => {
         .tz(new Date(), "Asia/Ho_Chi_Minh")
         .format("DD/MM/YYYY , hh:mm A"),
     };
-    console.log(req.body);
     if (req?.body?.event_name === "oa_send_text") {
       const messag = messageObject.message;
       var matches = messag.match(/\[(.*?)\]/);
@@ -51,45 +49,46 @@ router.post("/", async (req, res, next) => {
       }
     }
 
-    if (
-      req?.body?.event_name === "user_send_text" ||
-      req?.body?.event_name === "oa_send_text"
-    ) {
-      await sheet.addRows([messageObject]);
-    }
-    if (
-      req?.body?.event_name === "user_send_image" ||
-      req?.body?.event_name === "oa_send_image" ||
-      req?.body?.event_name === "oa_send_list"
-    ) {
-      var atts = req.body.message.attachments
-        .map(function (a) {
-          return a.payload.thumbnail;
-        })
-        .join("\r\n");
-      await sheet.addRows([
-        {
-          ...messageObject,
-          attachment: atts,
-        },
-      ]);
-    }
-    if (req.body.event_name === "user_send_location") {
-      var location = req.body.message.attachments[0].payload.coordinates;
-      await sheet.addRows([
-        {
-          ...messageObject,
-          latitude: location.latitude,
-          longitude: location.longitude,
-        },
-      ]);
-    }
+    // if (
+    //   req?.body?.event_name === "user_send_text" ||
+    //   req?.body?.event_name === "oa_send_text"
+    // ) {
+    //   await sheet.addRows([messageObject]);
+    // }
+    // if (
+    //   req?.body?.event_name === "user_send_image" ||
+    //   req?.body?.event_name === "oa_send_image" ||
+    //   req?.body?.event_name === "oa_send_list"
+    // ) {
+    //   var atts = req.body.message.attachments
+    //     .map(function (a) {
+    //       return a.payload.thumbnail;
+    //     })
+    //     .join("\r\n");
+    //   await sheet.addRows([
+    //     {
+    //       ...messageObject,
+    //       attachment: atts,
+    //     },
+    //   ]);
+    // }
+    // if (req.body.event_name === "user_send_location") {
+    //   var location = req.body.message.attachments[0].payload.coordinates;
+    //   await sheet.addRows([
+    //     {
+    //       ...messageObject,
+    //       latitude: location.latitude,
+    //       longitude: location.longitude,
+    //     },
+    //   ]);
+    // }
 
     return res.status(200).json({ message: "webhook" });
   } catch (error) {
-    console.log("error", error);
-    console.log("error", error);
     next(error);
+    console.log("error", error);
+    console.log("error", error);
   }
 });
+module.exports = router;
 module.exports = router;
