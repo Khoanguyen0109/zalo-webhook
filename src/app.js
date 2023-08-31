@@ -9,7 +9,9 @@ const morgan = require("morgan");
 
 const myXTeam = require("./api/myX-controller");
 const noiThat = require("./api/noi-that-controller");
+const offline = require("./api/offline-controller");
 const gps = require("./api/gps-controller");
+
 const renderFrom = require("./api/render-form");
 const custom = require("./api/custom-controller");
 const booking = require("./api/booking");
@@ -32,6 +34,7 @@ app.use("/api/webhook", noiThat);
 // API Giai Pháp Số webhook
 
 app.use("/api/webhook-gps", gps);
+app.use("/api/webhook-offline", offline);
 app.use("/myXteam", myXTeam);
 app.use("/custom", custom);
 app.use("/booking", booking);
