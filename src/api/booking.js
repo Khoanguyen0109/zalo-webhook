@@ -75,7 +75,20 @@ router.post("/check-booked", async (req, res, next) => {
 
 router.post("/", async (req, res, next) => {
   try {
-    const { seats, name, email, phone, play, tong_tien } = req.body;
+    const {
+      seats,
+      name,
+      email,
+      phone,
+      play,
+      tong_tien,
+      address,
+      district,
+      city,
+      ward,
+      delivery,
+      payment,
+    } = req.body;
     const bookedSeats = await getBookedSeats(play);
     const bookedError = [];
     if (!seats || seats.length === 0) {
@@ -110,6 +123,13 @@ router.post("/", async (req, res, next) => {
       email: email,
       so_luong_ghe: seats.length,
       tong_tien: tong_tien,
+      dia_chi: address,
+      tinh: city,
+      quan: district,
+      phuong: ward,
+      van_chuyen:
+        delivery === "ship_to" ? "Giao vé tận nơi" : "Nhận vé tại quầy",
+      phuong_thuc_thanh_toan: payment,
     });
 
     seats.forEach((item) => {
