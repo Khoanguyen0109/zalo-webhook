@@ -88,6 +88,7 @@ router.post("/", async (req, res, next) => {
       ward,
       delivery,
       payment,
+      voucher
     } = req.body;
     const bookedSeats = await getBookedSeats(play);
     const bookedError = [];
@@ -126,6 +127,7 @@ router.post("/", async (req, res, next) => {
       dia_chi: address,
       tinh: city,
       quan: district,
+      voucher,
       phuong: ward,
       van_chuyen:
         delivery === "ship_to" ? "Giao vé tận nơi" : "Nhận vé tại quầy",
