@@ -15,6 +15,7 @@ const gps = require("./api/gps-controller");
 const renderFrom = require("./api/render-form");
 const custom = require("./api/custom-controller");
 const booking = require("./api/booking");
+const crypto = require("./api/crypto-controller");
 
 global.APP = __dirname;
 dotenv.config();
@@ -39,6 +40,7 @@ app.use("/myXteam", myXTeam);
 app.use("/custom", custom);
 app.use("/booking", booking);
 app.use("/render-form", renderFrom);
+app.use("/crypto", crypto);
 
 app.use((err, req, res) => {
   const { message, code, subcode, errorItems, error } = err;
