@@ -42,8 +42,8 @@ app.use("/booking", booking);
 app.use("/render-form", renderFrom);
 app.use("/crypto", crypto);
 
-app.use((err, req, res) => {
-  console.log('err', err)
+app.use((err, req, res, next) => {
+  console.log("err", err);
   const { code } = err;
 
   res.status(code || 500).json(err);
