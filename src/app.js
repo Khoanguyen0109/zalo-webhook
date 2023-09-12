@@ -43,18 +43,9 @@ app.use("/render-form", renderFrom);
 app.use("/crypto", crypto);
 
 app.use((err, req, res) => {
-  const { message, code, subcode, errorItems, error } = err;
+  const { code } = err;
 
-  return rError(
-    res,
-    code || 500,
-    {
-      message: message || "Something went wrong!",
-      subcode,
-      errorItems,
-    },
-    error
-  );
+  return res.status(code || 500).json(err);
 });
 app.listen(PORT, () => console.log(`App listening at port ${PORT}`));
 
