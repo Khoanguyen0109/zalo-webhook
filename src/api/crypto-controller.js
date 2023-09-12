@@ -76,7 +76,14 @@ router.get("/wallet", async (req, res, next) => {
 
 router.post("/crypto_buy", async (req, res, next) => {
   try {
-    const { currency, amount, wallet_address_receiver, name, phone } = req.body;
+    const {
+      currency,
+      amount,
+      wallet_address_receiver,
+      name,
+      phone,
+      total_payment,
+    } = req.body;
     const id = uuidv4();
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
     await doc.useServiceAccountAuth({
@@ -92,17 +99,27 @@ router.post("/crypto_buy", async (req, res, next) => {
       wallet_address_receiver,
       name,
       phone,
+      total_payment,
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
     next(error);
   }
 });
+
 router.post("/crypto_sell", async (req, res, next) => {
   try {
     const id = uuidv4();
-    const { currency, amount, bank, account, to_wallet_address, name, phone } =
-      req.body;
+    const {
+      currency,
+      amount,
+      bank,
+      account,
+      to_wallet_address,
+      name,
+      phone,
+      total_payment,
+    } = req.body;
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
     await doc.useServiceAccountAuth({
       client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_CRYPTO,
@@ -120,6 +137,7 @@ router.post("/crypto_sell", async (req, res, next) => {
       to_wallet_address,
       name,
       phone,
+      total_payment,
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
