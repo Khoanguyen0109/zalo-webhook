@@ -66,6 +66,7 @@ router.get("/wallet", async (req, res, next) => {
       await sheet.getRows()
     ).map((item) => ({
       wallet_address: item.wallet_address,
+      network: item.network,
       limit: item.limit,
     }));
     console.log("rows", rows);
@@ -119,6 +120,7 @@ router.post("/crypto_sell", async (req, res, next) => {
       bank,
       account,
       to_wallet_address,
+      to_wallet_network,
       name,
       phone,
       total_payment,
@@ -138,6 +140,7 @@ router.post("/crypto_sell", async (req, res, next) => {
       bank,
       account,
       to_wallet_address,
+      to_wallet_network,
       name,
       phone,
       total_payment,
