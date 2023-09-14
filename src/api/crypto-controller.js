@@ -84,6 +84,7 @@ router.post("/crypto_buy", async (req, res, next) => {
       name,
       phone,
       total_payment,
+      network,
     } = req.body;
     const id = uuidv4();
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
@@ -101,6 +102,7 @@ router.post("/crypto_buy", async (req, res, next) => {
       name,
       phone,
       total_payment,
+      network,
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
