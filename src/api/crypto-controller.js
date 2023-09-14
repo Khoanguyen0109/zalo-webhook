@@ -42,6 +42,7 @@ router.get("/bank-account", async (req, res, next) => {
     ).map((item) => ({
       bank: item.bank,
       account: item.account,
+      account_name: item.account_name,
       limit: item.limit,
       transfer_info: item.transfer_info,
     }));
