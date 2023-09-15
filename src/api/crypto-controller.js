@@ -44,6 +44,7 @@ router.get("/bank-account", async (req, res, next) => {
       account: item.account,
       account_name: item.account_name,
       limit: item.limit,
+      qr_code: item.qr_code,
       transfer_info: item.transfer_info,
     }));
     console.log("rows", rows);
