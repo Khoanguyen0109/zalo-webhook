@@ -113,6 +113,42 @@ router.post("/crypto_buy", async (req, res, next) => {
   }
 });
 
+router.post("/crypto_buy_usdt", async (req, res, next) => {
+  try {
+    const {
+      currency,
+      amount,
+      mt4_mt5,
+      name,
+      phone,
+      total_payment,
+      network,
+    } = req.body;
+    const id = uuidv4();
+    const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
+    await doc.useServiceAccountAuth({
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_CRYPTO,
+      private_key: process.env.GOOGLE_PRIVATE_KEY_CRYPTO,
+    });
+    await doc.loadInfo(); // loads document properties and worksheets
+    const sheet = doc.sheetsByTitle["buy_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    await sheet.addRow({
+      id,
+      currency,
+      amount,
+      mt4_mt5,
+      name,
+      phone,
+      total_payment,
+      network,
+    });
+    return res.status(200).json({ status: 200, data: "success" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+
 router.post("/crypto_sell", async (req, res, next) => {
   try {
     const id = uuidv4();
