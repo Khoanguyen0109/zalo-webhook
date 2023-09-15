@@ -161,6 +161,7 @@ router.post("/crypto_sell", async (req, res, next) => {
       to_wallet_address,
       to_wallet_network,
       name,
+      mt4_mt5,
       phone,
       total_payment,
     } = req.body;
@@ -181,6 +182,7 @@ router.post("/crypto_sell", async (req, res, next) => {
       account_name,
       to_wallet_address,
       to_wallet_network,
+      mt4_mt5,
       name,
       phone,
       total_payment,
