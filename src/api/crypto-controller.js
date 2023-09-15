@@ -40,6 +40,7 @@ router.get("/bank-account", async (req, res, next) => {
     const rows = await (
       await sheet.getRows()
     ).map((item) => ({
+      currency: item.currency,
       bank: item.bank,
       account: item.account,
       account_name: item.account_name,
