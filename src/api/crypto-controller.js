@@ -115,15 +115,7 @@ router.post("/crypto_buy", async (req, res, next) => {
 
 router.post("/crypto_buy_usdt", async (req, res, next) => {
   try {
-    const {
-      currency,
-      amount,
-      mt4_mt5,
-      name,
-      phone,
-      total_payment,
-      network,
-    } = req.body;
+    const { currency, amount, mt4_mt5, name, phone, total_payment } = req.body;
     const id = uuidv4();
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
     await doc.useServiceAccountAuth({
@@ -140,14 +132,12 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       name,
       phone,
       total_payment,
-      network,
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
     next(error);
   }
 });
-
 
 router.post("/crypto_sell", async (req, res, next) => {
   try {
