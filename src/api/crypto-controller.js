@@ -83,7 +83,7 @@ router.get("/cost", async (req, res, next) => {
     ).map((item) => ({
       currency: item.currency,
       buy_fee: item.buy_fee,
-      deposit_fee: item.deposit_fee
+      deposit_fee: item.deposit_fee,
     }));
     return res.status(200).json({ data: rows });
   } catch (error) {
@@ -222,6 +222,10 @@ router.post("/crypto_sell", async (req, res, next) => {
 router.post("/upload", upload.single("image"), (req, res, next) => {
   try {
     const folderId = "1nz1bv3kdnqr5Sgy1S6iM_E8htsywstPI";
+
+    if (!req.file) {
+      return res.status("400").json({ message: "Invalid file" });
+    }
     // File details
     const fileMetadata = {
       name: req.file.originalname,
@@ -253,7 +257,10 @@ router.post("/upload", upload.single("image"), (req, res, next) => {
 
         // Delete the temporary file
         fs.unlinkSync(req.file.path);
-
+        console.log("file", file);
+        res.status(200).json({
+          filePath: `https://drive.google.com/file/d/${file.data.id}/view`,
+        });
         res.send("File uploaded successfully to Google Drive");
       }
     );
