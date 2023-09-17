@@ -160,7 +160,7 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
     });
     await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByTitle["buy_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
-    await sheet.addRow({
+    const rowBody = {
       id,
       currency,
       amount,
@@ -168,8 +168,9 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       name,
       phone,
       total_payment,
-    });
-    return res.status(200).json({ status: 200, data: "success" });
+    };
+    await sheet.addRow(rowBody);
+    return res.status(200).json({ status: 200, data: rowBody });
   } catch (error) {
     next(error);
   }
@@ -193,7 +194,7 @@ router.put("/crypto_buy_usdt/:id", async (req, res, next) => {
     if (updateRowIndex === -1) {
       return res.status(400).json({ message: "Not found" });
     }
-    rows[updateRowIndex].image = image
+    rows[updateRowIndex].image = image;
     rows[updateRowIndex].save();
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
