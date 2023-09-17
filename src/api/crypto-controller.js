@@ -159,7 +159,7 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       private_key: process.env.GOOGLE_PRIVATE_KEY_CRYPTO,
     });
     await doc.loadInfo(); // loads document properties and worksheets
-    const sheet = doc.sheetsByTitle["deposit_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    const sheet = doc.sheetsByTitle["buy_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
     await sheet.addRow({
       id,
       currency,
@@ -169,6 +169,32 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       phone,
       total_payment,
     });
+    return res.status(200).json({ status: 200, data: "success" });
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/crypto_buy_usdt/:id", async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { image } = req.body;
+
+    const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
+    await doc.useServiceAccountAuth({
+      client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_CRYPTO,
+      private_key: process.env.GOOGLE_PRIVATE_KEY_CRYPTO,
+    });
+    await doc.loadInfo(); // loads document properties and worksheets
+    const sheet = doc.sheetsByTitle["buy_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+
+    const rows = await sheet.getRows(); // can pass in { limit, offset }
+    const updateRowIndex = rows.findIndex((item) => item.id === id);
+    if (updateRowIndex === -1) {
+      return res.status(400).json({ message: "Not found" });
+    }
+    rows[updateRowIndex].image = image
+    rows[updateRowIndex].save();
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
     next(error);
