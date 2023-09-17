@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "crypto-usdt",
+  "private_key_id": "530bf5e8d3c13cea9a52c1655159200eaa33887e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDEon4UN6CgbZ+h\nKaFhUYqDEO1lYVrhqwcOYK7u+aBoHhmY4cRNw7K/rFOhp0GCGV72e9qeuEHnf7yy\nEIelJc2zTSzPAAeUpFgnL21vjCt19YFoTjjMzMfrlMvZsba9Z32XLyg9hvfbFk4i\nXQP8hla2Gqr36WlrZ126EMUEa9WEClF5cbSt91EXODGp0WNQyz8BMUfwgV9hI9k4\nM2j/lzdLLmHu4+otU2obIkoWbWmlntvHOrTK7GaICg3nIIxNJOKFdewQQJKKiTiH\nK35aeo76tASwcVJtOhI21qskmdhnoXkOLd53sF9sx7v1oRroLXqnezgxMVQZmGUE\n0ApRAoVxAgMBAAECggEARzledr9BgOrET/GO4XvSMrBedQLjEuvKtgQCSVCFMEF6\n3xwj6VER/YiTkHHPcirzcU+ifCxcvthPhqYjJAhB7ojtSpuFo2s1/ReaSbXZhjQj\nqB7xRwmD/sqaXiOXgBqs7KapqkOpoqN9MMhFaeJVJUgalorm4v8BfaSWYIgYwmcB\nVaIKjVYGA97GfL61/DFq8+6PMWsZANrYb8FceViDZM9ZG/WfUnFe6G2Dhsiuoykk\nNmjIhesCVZ8ADnMiJCnVeM2rb6b4Zc76ev8qzICh9xZKPlUoMCnQLO6pmYkMm7aS\ny7V+uXYvd8bogmHrltqb7pLqXPKcFFStt97VOpK8QwKBgQDzFtKZ9eNKotiAU0Fb\nrJNUhmo5AWq/m8I59SeIEXirWwsEYXuVJFFf4ZusC/3yE5s73L/6xgC6Uritg0sJ\njzOp4xC/tN6YFxPoU1pENUor2Vuj3Ld/V4Dhy/aB0+tH+J6x46acWniOUihEPWXl\nPzeXrcs2E/Tr9q6jPO2pYDgGIwKBgQDPFAykf7mIDfKxemVyMgwm9tgKxB8BFn8A\nHQou3Bacv0A66msjbsVMujr456ufPHn82RRFudikLDOe/32dBRBrGlBK44zQAGMZ\n4gBo+qVtnC9Ypr2kVP/ezNzCNgLTIuOKow3ypsVlxQI8nScq45jnBdfKr19eZ4DH\nJpnhivY9WwKBgAnPkP5fuyWm/t/m/EtL4sJVjnHwibNkAOm/6DGIqvsXeJFbsdYq\nGhKpk1PVRBGCExDObv0bAqqCbiuqkdu36NjhbiqejSFMRSRqQMlh8TVl11n8rXc5\nO91hEvjYabWE5jq9ulqzGAx+aluesr8W1xKLFBmBoq/nS9MQwXLFjF1LAoGASytu\nA3DR+o+Fn+NcW/3K54IHnrDeyFhQNcxU2/nMw42xVTGvPqeBO38G1T/TzvP3HE/4\nye7Ss5XQD1GTWaJy+U4OA4FipkbdspGVsIX78zQVA8tTYAny7//RyzYsBFTP4I2c\nDI95bJ39V998TldcM9CtKshKiExuNNzQU01MYa0CgYBFolxgrT57TcZgBTjbO+s3\nJyjHasZNcAS+0M3328yvbnPsAoTqz1XCDn8RnmFXBUVPHQzpX8S6sH6ICRx7liD4\n+fxDcCpjOrU5EMscW9d3yYlIUHCJap1Em3DY5Ce37aa6XjB7eZ/5na+dZDiF9aYy\nz7x/r+HbwEJBJuogxnE+yg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "crypto-usdt-sheet@crypto-usdt.iam.gserviceaccount.com",
+  "client_id": "103014442224207089027",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/crypto-usdt-sheet%40crypto-usdt.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
