@@ -23,8 +23,8 @@ const doJob = async () => {
   const row = {
     USD: 1,
     VND: res.data.conversion_rates.VND,
-    KHR: res.data.conversion_rates.KHR,
-    PHP: res.data.conversion_rates.PHP,
+    REIL: res.data.conversion_rates.KHR,
+    PESO: res.data.conversion_rates.PHP,
   };
   await sheet.addRow(row);
 

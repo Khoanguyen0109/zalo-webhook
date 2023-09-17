@@ -33,8 +33,8 @@ router.get("/currency-exchange", async (req, res, next) => {
     ).map((item) => ({
       USD: item.USD,
       VND: item.VND,
-      KHR: item.KHR,
-      PHP: item.PHP,
+      REIL: item.REIL,
+      PESO: item.PESO,
     }));
     console.log("rows", rows);
     return res.status(200).json({ data: rows });
