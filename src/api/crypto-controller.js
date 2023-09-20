@@ -208,7 +208,7 @@ router.put("/crypto_buy_usdt/:id", async (req, res, next) => {
       private_key: process.env.GOOGLE_PRIVATE_KEY_CRYPTO,
     });
     await doc.loadInfo(); // loads document properties and worksheets
-    const sheet = doc.sheetsByTitle["buy_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    const sheet = doc.sheetsByTitle["deposit_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
 
     const rows = await sheet.getRows(); // can pass in { limit, offset }
     const updateRowIndex = rows.findIndex((item) => item.id === id);
