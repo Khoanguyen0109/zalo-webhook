@@ -124,6 +124,9 @@ router.post("/crypto_buy", async (req, res, next) => {
       phone,
       total_payment,
       network,
+      account,
+      bank,
+      account_name,
     } = req.body;
     const id = uuidv4();
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
@@ -142,6 +145,9 @@ router.post("/crypto_buy", async (req, res, next) => {
       phone,
       total_payment,
       network,
+      account,
+      bank,
+      account_name,
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
@@ -159,6 +165,9 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       phone,
       total_payment,
       wallet_address_trc20,
+      account,
+      bank,
+      account_name,
     } = req.body;
     const id = uuidv4();
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
@@ -177,6 +186,9 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       name,
       phone,
       total_payment,
+      account,
+      bank,
+      account_name,
     };
     await sheet.addRow(rowBody);
     return res.status(200).json({ status: 200, data: rowBody });
