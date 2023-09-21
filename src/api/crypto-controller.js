@@ -168,6 +168,7 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       account,
       bank,
       account_name,
+      image,
     } = req.body;
     const id = uuidv4();
     const doc = new GoogleSpreadsheet(constants.CRYPTO_SHEET_ID);
@@ -189,6 +190,7 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       account,
       bank,
       account_name,
+      image
     };
     await sheet.addRow(rowBody);
     return res.status(200).json({ status: 200, data: rowBody });
