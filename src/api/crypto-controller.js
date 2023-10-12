@@ -4,6 +4,7 @@ var constants = require("../constants");
 const { GoogleSpreadsheet } = require("google-spreadsheet");
 const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
+const { DateTime } = require("luxon");
 
 const { google } = require("googleapis");
 const upload = require("../upload");
@@ -136,6 +137,8 @@ router.post("/crypto_buy", async (req, res, next) => {
     });
     await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByTitle["buy_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    const date = DateTime.local();
+    var rezoned = date.setZone("Asia/Ho_Chi_Minh");
     await sheet.addRow({
       id,
       currency,
@@ -148,6 +151,8 @@ router.post("/crypto_buy", async (req, res, next) => {
       account,
       bank,
       account_name,
+      created_date: rezoned.toFormat("dd/MM/yyyy, HH:mm"),
+
     });
     return res.status(200).json({ status: 200, data: "success" });
   } catch (error) {
@@ -178,6 +183,8 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
     });
     await doc.loadInfo(); // loads document properties and worksheets
     const sheet = doc.sheetsByTitle["deposit_record_usdt"]; // or use doc.sheetsById[id] or doc.sheetsByTitle[title]
+    const date = DateTime.local();
+    var rezoned = date.setZone("Asia/Ho_Chi_Minh");
     const rowBody = {
       id,
       currency,
@@ -190,7 +197,9 @@ router.post("/crypto_buy_usdt", async (req, res, next) => {
       account,
       bank,
       account_name,
-      image
+      image,
+      created_date: rezoned.toFormat("dd/MM/yyyy, HH:mm"),
+
     };
     await sheet.addRow(rowBody);
     return res.status(200).json({ status: 200, data: rowBody });
