@@ -56,7 +56,7 @@ const addNewInvoice = async () => {
     }
     for (let i = 1; i <= pageInvoice; i++) {
       const invoices = await getInvoice(authHeader, i, {
-        fromPurchaseDate: startOfDay(new Date()),
+        fromPurchaseDate: startOfDay(new Date(new Date().setDate(new Date().getDate()-4))),
         toPurchaseDate: endOfDay(new Date()),
       });
       console.log("invoices :>> ", invoices);

@@ -16,6 +16,7 @@ const renderFrom = require("./api/render-form");
 const custom = require("./api/custom-controller");
 const booking = require("./api/booking");
 const crypto = require("./api/crypto-controller");
+const { default: axios } = require("axios");
 
 global.APP = __dirname;
 dotenv.config();
@@ -41,6 +42,27 @@ app.use("/custom", custom);
 app.use("/booking", booking);
 app.use("/render-form", renderFrom);
 app.use("/crypto", crypto);
+
+app.get("/zalo-user", async (req, res, next) => {
+  try {
+    const { access_token, user_id } = req.query;
+    console.log("access_token", access_token);
+    const data = await axios.get("https://openapi.zalo.me/v2.0/oa/getprofile", {
+      headers: {
+        access_token,
+      },
+      params: {
+        data: JSON.stringify({
+          user_id,
+        }),
+      },
+    });
+    console.log("data", data);
+    return res.status(200).json({ ...data.data });
+  } catch (error) {
+    next(error);
+  }
+});
 
 app.use((err, req, res, next) => {
   console.log("err", err);
