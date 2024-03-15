@@ -16,6 +16,8 @@ const renderFrom = require("./api/render-form");
 const custom = require("./api/custom-controller");
 const booking = require("./api/booking");
 const crypto = require("./api/crypto-controller");
+const google = require("./api/google-auth");
+
 const { default: axios } = require("axios");
 
 global.APP = __dirname;
@@ -24,7 +26,13 @@ const app = express();
 const PORT = process.env.PORT || 5002;
 
 // CORS origin
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5500",
+    credentials: true,
+  })
+);
+
 app.use(morgan("dev"));
 
 // dissable cache-control
@@ -42,6 +50,7 @@ app.use("/custom", custom);
 app.use("/booking", booking);
 app.use("/render-form", renderFrom);
 app.use("/crypto", crypto);
+app.use("/google", google);
 
 app.get("/zalo-user", async (req, res, next) => {
   try {
