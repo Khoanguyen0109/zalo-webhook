@@ -2,21 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { google } = require("googleapis");
 
-const credentials = require("../key/222.json");
 const { default: axios } = require("axios");
-const YOUR_CLIENT_ID = credentials.client_id;
-const YOUR_CLIENT_SECRET = credentials.client;
-
-const scopes = [
-  "https://www.googleapis.com/auth/drive.metadata.readonly",
-  "https://www.googleapis.com/auth/drive.file",
-  "https://www.googleapis.com/auth/userinfo.email",
-  "https://www.googleapis.com/auth/userinfo.profile",
-  "https://www.googleapis.com/auth/spreadsheets",
-  "https://www.googleapis.com/auth/drive",
-  "https://www.googleapis.com/auth/drive.readonly",
-  "https://www.googleapis.com/auth/spreadsheets.readonly",
-];
 
 router.get("/google-authorize", (req, res, next) => {
   try {
@@ -42,7 +28,7 @@ router.get("/google-authorize", (req, res, next) => {
 router.get("/google-auth", async (req, res, next) => {
   try {
     const { client_id, client_secret, redirect_url, code } = req.query;
-    
+
     const oauth2Client = new google.auth.OAuth2(
       client_id,
       client_secret,
