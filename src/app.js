@@ -26,12 +26,7 @@ const app = express();
 const PORT = process.env.PORT || 5002;
 
 // CORS origin
-app.use(
-  cors({
-    origin: "http://localhost:5500",
-    credentials: true,
-  })
-);
+app.use();
 
 app.use(morgan("dev"));
 
