@@ -26,7 +26,7 @@ const app = express();
 const PORT = process.env.PORT || 5002;
 
 // CORS origin
-app.use();
+app.use(cors());
 
 app.use(morgan("dev"));
 
