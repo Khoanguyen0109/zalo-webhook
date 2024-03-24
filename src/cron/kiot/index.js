@@ -81,16 +81,6 @@ const initInvoice = async (page) => {
         const dataDetail = {
           idInvoice: invoice.id,
           ...detail,
-          // productBatchExpireId: detail.productBatchExpire?.id,
-          // productBatchExpireName: detail.productBatchExpire?.batchName,
-          // productBatchExpireCreatedDate: format(
-          //   new Date(detail?.productBatchExpire?.createdDate),
-          //   'dd/MM/yyyy , H:mm:ss'
-          // ),
-          // productBatchExpireDate: format(
-          //   new Date(detail?.productBatchExpire?.expireDate),
-          //   'dd/MM/yyyy , H:mm:ss'
-          // ),
           createdDate: format(
             new Date(invoice.createdDate),
             "dd/MM/yyyy , H:mm:ss"
@@ -117,8 +107,7 @@ const doJob = async () => {
     const data = await axios.get(
       "https://script.google.com/macros/s/AKfycbzwIkiHFVQ4IPoO-ufXwrxm4bVNgblTy4RViHXq1shvOtQfF6P-5va1cTyNySdcaOWs/exec"
     );
-    const { id_sheet_1, client_email, private_key } =
-      data.data.data[0];
+    const { id_sheet_1, client_email, private_key } = data.data.data[0];
     doc = await getDoc(id_sheet_1, client_email, private_key);
     const auth = await axios(authConfig);
     accessToken = auth.data.access_token;
