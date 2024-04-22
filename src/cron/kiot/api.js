@@ -43,7 +43,7 @@ const getInvoice = async (authHeader, page, params) => {
 
   itemPerPage = 100;
   offset = page - 1 <= 0 ? 0 : (page - 1) * itemPerPage + 1;
-
+  console.log('offset', offset)
   const res = await axios.get("https://public.kiotapi.com/invoices", {
     ...authHeader,
     params: {

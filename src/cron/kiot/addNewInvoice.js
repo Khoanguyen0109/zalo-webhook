@@ -25,6 +25,7 @@ const addNewInvoice = async () => {
     ]);
 
     const accessToken = auth.data.access_token;
+    console.log('accessToken', accessToken)
     const authHeader = {
       headers: {
         Authorization: "Bearer " + accessToken, //the token is a variable which holds the token
@@ -39,7 +40,7 @@ const addNewInvoice = async () => {
     const sheetDetail = doc3.sheetsByIndex[0];
 
     const totalInvoice = await getTotalInvoice(authHeader, {
-      fromPurchaseDate: startOfDay(new Date()),
+      fromPurchaseDate:  startOfDay(new Date(new Date().setDate(new Date().getDate()-4))),
       toPurchaseDate: endOfDay(new Date()),
     });
     const PRODUCT_PER_PAGE = 100;
@@ -54,12 +55,15 @@ const addNewInvoice = async () => {
     if (rows.length === totalInvoice) {
       return;
     }
+    console.log('newestInvoiceFromSheet', newestInvoiceFromSheet[0].createdTimeStamp)
+    console.log('first', startOfDay(new Date(new Date().setDate(new Date().getDate()-4))))
+    console.log('endOfDay(new Date())', endOfDay(new Date()))
     for (let i = 1; i <= pageInvoice; i++) {
       const invoices = await getInvoice(authHeader, i, {
-        fromPurchaseDate: startOfDay(new Date(new Date().setDate(new Date().getDate()-4))),
+        fromPurchaseDate:  startOfDay(new Date(new Date().setDate(new Date().getDate()-4))),
         toPurchaseDate: endOfDay(new Date()),
       });
-      console.log("invoices :>> ", invoices);
+      // console.log("invoices :>> ", invoices);
       invoices.map((invoice) => {
         if (
           new Date(invoice.createdDate).getTime() >=
